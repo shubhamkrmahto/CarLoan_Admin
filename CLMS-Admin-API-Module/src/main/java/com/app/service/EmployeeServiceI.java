@@ -17,4 +17,7 @@ public interface EmployeeServiceI {
 	public String UpdateEmpPass(Integer id, String pass);
 	
 	public String UpdateEmpPhoto(Integer id, MultipartFile photo);
+	
+	public void deleteData(Integer employeeId);
+
 }

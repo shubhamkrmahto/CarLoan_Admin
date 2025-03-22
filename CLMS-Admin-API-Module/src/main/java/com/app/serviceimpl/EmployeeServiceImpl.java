@@ -14,8 +14,6 @@ import com.app.entity.EmployeeDetails;
 import com.app.enums.EmployeeType;
 import com.app.repo.EmployeeRepo;
 import com.app.service.EmployeeServiceI;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 
@@ -130,6 +128,12 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 		
 		return "Your Profile Photo Has been updated successfully.";
 	}
+		
+		@Override
+		public void deleteData(Integer employeeId) {
+		
+	    employeeRepo.deleteById(employeeId);
+		}
 	
 	
 	
