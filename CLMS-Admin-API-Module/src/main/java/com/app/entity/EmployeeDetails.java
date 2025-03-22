@@ -31,12 +31,6 @@ public class EmployeeDetails {
 	
 }
 
-/*
- * {
- * 
- * "employeeName": "aaaa", "email": "aaaaa@gmail.com", "employeeType":
- * "admin", "password": "12345" }
- */
 
 
 

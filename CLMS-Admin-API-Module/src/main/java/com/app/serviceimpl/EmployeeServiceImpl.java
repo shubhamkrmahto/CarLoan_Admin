@@ -56,6 +56,36 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 	}
 
 	@Override
+	public Optional<EmployeeDetails> changeEmployeeDetailsFild(int id, MultipartFile photo,
+			String employeeDetails) {
+		
+		Optional<EmployeeDetails> employeeDeta = employeeRepo.findById(id);
+		
+		EmployeeDetails details = employeeDeta.get();
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		try {
+			
+			
+		    EmployeeDetails employee = mapper.readValue(employeeDetails,EmployeeDetails.class);
+			
+			
+		    details.setEmployeeName(employee.getEmployeeName());
+		    details.setEmail(employee.getEmail());
+		    details.setEmployeeType(employee.getEmployeeType());
+		
+		    details.setPassword(employee.getPassword());
+		
+		    details.setProfilePhoto(photo.getBytes());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		employeeRepo.save(details);
+		return Optional.of(details);
+	}
+
 	public String UpdateEmpName(Integer id, String name) {
 
 		Optional<EmployeeDetails> getById = employeeRepo.findById(id);
@@ -134,8 +164,6 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 		
 	    employeeRepo.deleteById(employeeId);
 		}
-	
-	
 	
 	
 
