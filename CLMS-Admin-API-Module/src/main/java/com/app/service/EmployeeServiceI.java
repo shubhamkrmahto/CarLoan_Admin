@@ -6,4 +6,6 @@ public interface EmployeeServiceI {
 
 	public String saveEmployee(String emp, MultipartFile photo);
 
+	public void deleteData(Integer employeeId);
+
 }
