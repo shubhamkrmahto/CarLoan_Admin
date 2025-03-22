@@ -1,5 +1,8 @@
 package com.app.serviceimpl;
 
+import java.io.IOException;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -52,6 +55,39 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 		
 					 
 	}
+
+	@Override
+	public Optional<EmployeeDetails> changeEmployeeDetailsFild(int id, MultipartFile photo,
+			String employeeDetails) {
+		
+		Optional<EmployeeDetails> employeeDeta = employeeRepo.findById(id);
+		
+		EmployeeDetails details = employeeDeta.get();
+		
+		ObjectMapper mapper = new ObjectMapper();
+		
+		try {
+			
+			
+		    EmployeeDetails employee = mapper.readValue(employeeDetails,EmployeeDetails.class);
+			
+			
+		    details.setEmployeeName(employee.getEmployeeName());
+		    details.setEmail(employee.getEmail());
+		    details.setEmployeeType(employee.getEmployeeType());
+		
+		    details.setPassword(employee.getPassword());
+		
+		    details.setProfilePhoto(photo.getBytes());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		employeeRepo.save(details);
+		return Optional.of(details);
+	}
+
+	
 	
 	
 	
