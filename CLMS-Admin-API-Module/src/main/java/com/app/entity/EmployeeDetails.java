@@ -1,5 +1,7 @@
 package com.app.entity;
 
+import com.app.enums.EmployeeType;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +23,7 @@ public class EmployeeDetails {
 	private Integer employeeId;
 	private String employeeName;
 	private String email;
-	private String employeeType;
+	private EmployeeType employeeType;
 	private String password;
 	@Lob
 	@Column(length =99999999)
