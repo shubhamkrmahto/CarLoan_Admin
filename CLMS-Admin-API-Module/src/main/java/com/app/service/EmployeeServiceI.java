@@ -26,4 +26,6 @@ public interface EmployeeServiceI {
 	
 	public void deleteData(Integer employeeId);
 
+	public EmployeeDetails getEmployee(String employeeEmail, String employeePassword);
+
 }

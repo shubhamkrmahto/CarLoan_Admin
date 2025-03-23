@@ -31,6 +31,12 @@ public class EmployeeDetails {
 	
 }
 
+//{
+//  "employeeName":"Vicky",
+//  "email":"krushnachandane05@gmail.com",
+//  "employeeType":"OE",
+//  "password":"12345"
+//}
 
 
 

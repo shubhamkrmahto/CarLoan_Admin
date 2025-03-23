@@ -158,12 +158,29 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 		
 		return "Your Profile Photo Has been updated successfully.";
 	}
+	
 		
-		@Override
-		public void deleteData(Integer employeeId) {
+	@Override
+	public void deleteData(Integer employeeId) {
 		
-	    employeeRepo.deleteById(employeeId);
-		}
+	   employeeRepo.deleteById(employeeId);
+	}
+		
+		
+
+	@Override
+	public EmployeeDetails getEmployee(String employeeEmail, String employeePassword) {
+
+	   EmployeeDetails employee = employeeRepo.findByEmail(employeeEmail);
+	   if(employee.getEmail().equals(employeeEmail) && employee.getPassword().equals(employeePassword))
+	   {
+		   return employee;
+	   }
+	   else {
+		      System.out.println("Incorrect Infomation  Please Enter Valid Details");
+	   		}
+		return null;
+	}
 	
 	
 
