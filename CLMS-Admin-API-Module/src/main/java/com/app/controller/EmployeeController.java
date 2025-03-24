@@ -102,5 +102,29 @@ public class EmployeeController {
 		EmployeeDetails employeeDetails =  employeeService.getEmployee(employeeEmail,employeePassword);
 		 return new ResponseEntity<EmployeeDetails>(employeeDetails,HttpStatus.OK);
 	 }
+	 
+	 @PostMapping("/sendOTP/{email}")
+	 public ResponseEntity<String> sendOTP(@PathVariable("email") String email)
+	 {
+		 employeeService.sendOTP(email);
+		 
+		 return new ResponseEntity<String>("OTP has been sent to your email.", HttpStatus.ACCEPTED);
+	 }
+	 
+	 @PostMapping("/verifyOTP/{otp}")
+	 public ResponseEntity<EmployeeDetails> validateOTP(@PathVariable("otp") String otp)
+	 {
+		 
+		 EmployeeDetails ed =  employeeService.verifyOTP(otp);
+		 
+		 if(!ed.equals(null))
+		 {
+			 return new ResponseEntity<EmployeeDetails>(ed, HttpStatus.OK);
+		 }else {
+			 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		 }
+		 
+		 
+	 }
 	
 }
