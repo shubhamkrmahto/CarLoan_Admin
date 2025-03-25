@@ -117,7 +117,7 @@ public class EmployeeController {
 		 
 		 EmployeeDetails ed =  employeeService.verifyOTP(otp);
 		 
-		 if(!ed.equals(null))
+		 if(ed!=null)
 		 {
 			 return new ResponseEntity<EmployeeDetails>(ed, HttpStatus.OK);
 		 }else {
