@@ -3,6 +3,8 @@ package com.app.serviceimpl;
 import java.io.IOException;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -20,6 +22,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeServiceI {
+	
+	private static final Logger log=LoggerFactory.getLogger(EmployeeServiceImpl.class);
+	
 	
 	@Autowired
 	private EmployeeRepo employeeRepo;
@@ -50,6 +55,9 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		log.info("Employee has been saved successfully." );
+		
 		return "Employee Data Saved Successfully";
 		
 					 
@@ -83,6 +91,8 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 			e.printStackTrace();
 		}
 		employeeRepo.save(details);
+		
+		log.info("Employee has been UPDATED successfully and Enquiry id is : " + id );
 		return Optional.of(details);
 	}
 
@@ -95,6 +105,8 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 		employeeDetails.setEmployeeName(name);
 		
 		employeeRepo.save(employeeDetails);
+		
+		log.info("Employee has been updated NAME successfully for enquiry id = " + id);
 		
 		return "Your Full Name Has been updated successfully.";
 	}
@@ -110,6 +122,8 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 		
 		employeeRepo.save(employeeDetails);
 		
+		log.info("Employee has been updated EMAIL successfully for enquiry id = " + id);
+		
 		return "Your Email Has been updated successfully.";
 	}
 
@@ -124,6 +138,9 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 		
 		employeeRepo.save(employeeDetails);
 		
+		
+		log.info("Employee has been updated TYPE successfully for enquiry id = " + id);
+		
 		return "Your Employee Type Has been updated successfully.";
 	}
 
@@ -137,6 +154,8 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 		employeeDetails.setPassword(pass);
 		
 		employeeRepo.save(employeeDetails);
+		
+		log.info("Employee has been updated password successfully for enquiry id = " + id);
 		
 		return "Your Password Has been updated successfully.";
 	}
@@ -156,6 +175,8 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 			e.printStackTrace();
 		}
 		
+		log.info("Employee has been updated Profile Photo successfully for enquiry id = " + id);
+		
 		return "Your Profile Photo Has been updated successfully.";
 	}
 	
@@ -164,6 +185,8 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 	public void deleteData(Integer employeeId) {
 		
 	   employeeRepo.deleteById(employeeId);
+	   
+	   log.info("Employee has been Deleted for Employee id : " + employeeId);
 	}
 		
 		
@@ -174,10 +197,15 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 	   EmployeeDetails employee = employeeRepo.findByEmail(employeeEmail);
 	   if(employee.getEmail().equals(employeeEmail) && employee.getPassword().equals(employeePassword))
 	   {
+		   
+		   log.info(" GET All DATA successfully ");
+		   
 		   return employee;
 	   }
 	   else {
-		      System.out.println("Incorrect Infomation  Please Enter Valid Details");
+		   
+		   log.info("Incorrect Infomation  Please Enter Valid Details");
+		     
 	   		}
 		return null;
 	}
