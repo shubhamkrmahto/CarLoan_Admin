@@ -2,6 +2,7 @@ package com.app.serviceimpl;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.Random;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,24 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 	@Autowired
 	private JavaMailSender mailSender;
 	
+	private String generatedOTP;
+	
+	private String emails;
+	
+	private final Random random = new Random();
+	
+	public String generateOTP()
+	{
+		generatedOTP = String.format("%06d", random.nextInt(999999));
+		
+		return generatedOTP;
+	}
+	
+	public boolean validateOTP(String getOTP)
+	{
+		return getOTP.equals(generatedOTP);
+	}
+	
 	@Value("${spring.mail.username}")
 	private String from;
 
@@ -49,7 +68,7 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 		    mail.setFrom(from);
 		    mail.setTo(employee.getEmail());
 		    mail.setSubject("Employee Registration");
-		    mail.setText("Dear Employee , Your Account has been Created successfully on Krushna FinCorp");
+		    mail.setText("Dear Employee , Your Account has been Created successfully on Krushna FinCorp.");
 		    
 			
 		} catch (Exception e) {
@@ -208,6 +227,41 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 		     
 	   		}
 		return null;
+	}
+
+	@Override
+	public void sendOTP(String email) {
+		// TODO Auto-generated method stub
+		emails=email;
+		generateOTP();
+		
+		SimpleMailMessage mail = new SimpleMailMessage();
+	    mail.setFrom(from);
+	    mail.setTo(emails);
+	    mail.setSubject("Employee Registration");
+	    mail.setText("Your One Time Password is "+generatedOTP+".");
+	    
+	    mailSender.send(mail);
+		
+	}
+
+	@Override
+	public EmployeeDetails verifyOTP(String otp) {
+		// TODO Auto-generated method stub
+		if(validateOTP(otp)) {
+			return getEmployee(emails);
+		}
+		else
+		{
+			return null;
+		}
+	}
+
+	@Override
+	public EmployeeDetails getEmployee(String mail) {
+		// TODO Auto-generated method stub
+		
+		return employeeRepo.findByEmail(mail);
 	}
 	
 	
