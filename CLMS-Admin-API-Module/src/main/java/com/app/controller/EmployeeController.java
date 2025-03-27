@@ -1,5 +1,6 @@
 package com.app.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,12 +97,24 @@ public class EmployeeController {
      }
 	
 	
+	
 	 @GetMapping("/getEmployeeDetails/{email}/{pass}")
 	 public ResponseEntity<EmployeeDetails> getEmlpoyeeDetails(@PathVariable("email") String employeeEmail,@PathVariable("pass") String employeePassword)
 	 {
 		EmployeeDetails employeeDetails =  employeeService.getEmployee(employeeEmail,employeePassword);
 		 return new ResponseEntity<EmployeeDetails>(employeeDetails,HttpStatus.OK);
 	 }
+	 
+	 
+	 @GetMapping("/getAllEmployee/{email}/{pass}")
+	 public ResponseEntity<List<EmployeeDetails>> getAllEmployee(@PathVariable("email") String email,@PathVariable("pass") String pass)
+	 {
+		List<EmployeeDetails> employeeList = employeeService.getAllEmployee(email , pass);
+		
+		return new ResponseEntity<List<EmployeeDetails>>(employeeList,HttpStatus.OK);
+	 }
+	 
+	 
 	 
 	 @PostMapping("/sendOTP/{email}")
 	 public ResponseEntity<String> sendOTP(@PathVariable("email") String email)

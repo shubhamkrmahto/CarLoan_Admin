@@ -1,6 +1,7 @@
 package com.app.serviceimpl;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -234,6 +235,17 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 		// TODO Auto-generated method stub
 		
 		return employeeRepo.findByEmail(mail);
+	}
+
+	@Override
+	public List<EmployeeDetails> getAllEmployee(String email, String pass) {
+		
+
+		   if(email.equals("Admin") && pass.equals("Admin")){
+			    
+		   		return employeeRepo.findAll();
+		   	}
+		return null;
 	}
 	
 	
