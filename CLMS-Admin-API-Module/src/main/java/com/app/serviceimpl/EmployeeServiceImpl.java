@@ -248,7 +248,6 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 
 	@Override
 	public EmployeeDetails verifyOTP(String otp) {
-		// TODO Auto-generated method stub
 		if(validateOTP(otp)) {
 			return getEmployee(emails);
 		}
@@ -260,7 +259,6 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 
 	@Override
 	public EmployeeDetails getEmployee(String mail) {
-		// TODO Auto-generated method stub
 		
 		return employeeRepo.findByEmail(mail);
 	}
