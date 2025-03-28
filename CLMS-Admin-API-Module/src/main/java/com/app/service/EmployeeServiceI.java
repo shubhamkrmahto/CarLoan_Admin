@@ -1,5 +1,6 @@
 package com.app.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.web.multipart.MultipartFile;
@@ -32,5 +33,7 @@ public interface EmployeeServiceI {
 	public EmployeeDetails getEmployee(String employeeEmail, String employeePassword);
 	
 	public EmployeeDetails getEmployee(String employeeEmail);
+
+	public List<EmployeeDetails> getAllEmployee(String email, String pass);
 
 }

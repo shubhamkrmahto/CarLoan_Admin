@@ -1,6 +1,7 @@
 package com.app.serviceimpl;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
@@ -247,7 +248,6 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 
 	@Override
 	public EmployeeDetails verifyOTP(String otp) {
-		// TODO Auto-generated method stub
 		if(validateOTP(otp)) {
 			return getEmployee(emails);
 		}
@@ -259,9 +259,19 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 
 	@Override
 	public EmployeeDetails getEmployee(String mail) {
-		// TODO Auto-generated method stub
 		
 		return employeeRepo.findByEmail(mail);
+	}
+
+	@Override
+	public List<EmployeeDetails> getAllEmployee(String email, String pass) {
+		
+
+		   if(email.equals("Admin") && pass.equals("Admin")){
+			    
+		   		return employeeRepo.findAll();
+		   	}
+		return null;
 	}
 	
 	
