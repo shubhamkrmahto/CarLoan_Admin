@@ -33,14 +33,3 @@ public class EmployeeDetails {
 	private byte[] profilePhoto;
 	
 }
-
-//{
-//  "employeeName":"Vicky",
-//  "email":"krushnachandane05@gmail.com",
-//  "employeeType":"OE",
-//  "password":"12345"
-//}
-
-
-
-

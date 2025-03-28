@@ -26,7 +26,7 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeServiceI employeeService;
 	
-	@PostMapping("/save_employee")
+	@PostMapping("/saveEmployee")
 	public ResponseEntity<String> saveEmployee(@RequestPart("emp") String emp,
 			                                   @RequestPart("photo") MultipartFile photo){
 	

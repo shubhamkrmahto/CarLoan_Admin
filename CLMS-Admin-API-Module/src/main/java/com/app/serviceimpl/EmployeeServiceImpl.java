@@ -3,14 +3,12 @@ package com.app.serviceimpl;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.Random;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.app.entity.EmployeeDetails;
 import com.app.enums.EmployeeType;
 import com.app.repo.EmployeeRepo;
@@ -28,8 +26,10 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 	@Autowired
 	private JavaMailSender mailSender;
 	
+	//generated otp by methods
 	private String generatedOTP;
 	
+	//User email
 	private String emails;
 	
 	private final Random random = new Random();
