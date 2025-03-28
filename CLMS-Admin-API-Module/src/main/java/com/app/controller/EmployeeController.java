@@ -31,7 +31,7 @@ public class EmployeeController {
 	@Autowired
 	private EmployeeServiceI employeeService;
 	
-	@PostMapping("/save_employee")
+	@PostMapping("/saveEmployee")
 	public ResponseEntity<String> saveEmployee(@RequestPart("emp") String emp,
 			                                   @RequestPart("photo") MultipartFile photo){
 	
@@ -154,7 +154,7 @@ public class EmployeeController {
 		 
 		 EmployeeDetails ed =  employeeService.verifyOTP(otp);
 		 
-		 if(!ed.equals(null))
+		 if(ed!=null)
 		 {
 			 return new ResponseEntity<EmployeeDetails>(ed, HttpStatus.OK);
 		 }else {
