@@ -72,6 +72,7 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 		    mail.setSubject("Employee Registration");
 		    mail.setText("Dear Employee , Your Account has been Created successfully on Krushna FinCorp.");
 		    
+		    
 			
 		} catch (Exception e) {
 			e.printStackTrace();
