@@ -34,6 +34,6 @@ public interface EmployeeServiceI {
 	
 	public EmployeeDetails getEmployee(String employeeEmail);
 
-	public List<EmployeeDetails> getAllEmployee(String email, String pass);
+	public List<EmployeeDetails> getAllEmployee();
 
 }

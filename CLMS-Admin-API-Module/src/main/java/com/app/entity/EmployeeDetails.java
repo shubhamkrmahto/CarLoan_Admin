@@ -24,7 +24,8 @@ public class EmployeeDetails {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer employeeId;
 	private String employeeName;
-	private String email;
+	private String employeeEmail;
+	private Long employeeContact;
 	@Enumerated(EnumType.STRING)
 	private EmployeeType employeeType;
 	private String password;

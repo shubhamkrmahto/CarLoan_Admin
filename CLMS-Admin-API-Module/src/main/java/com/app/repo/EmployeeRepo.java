@@ -8,8 +8,6 @@ import java.util.List;
 
 public interface EmployeeRepo extends JpaRepository<EmployeeDetails, Integer> {
 
-	
-	
-	public EmployeeDetails findByEmail(String employeeEmail);
+	public EmployeeDetails findByEmployeeEmail(String employeeEmail);
 
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +23,7 @@ import com.app.entity.EmployeeDetails;
 import com.app.enums.EmployeeType;
 import com.app.service.EmployeeServiceI;
 
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
@@ -130,10 +132,10 @@ public class EmployeeController {
 	 }
 	 
 	 
-	 @GetMapping("/getAllEmployee/{email}/{pass}")
-	 public ResponseEntity<List<EmployeeDetails>> getAllEmployee(@PathVariable("email") String email,@PathVariable("pass") String pass)
+	 @GetMapping("/getAllEmployee")
+	 public ResponseEntity<List<EmployeeDetails>> getAllEmployee()
 	 {
-		List<EmployeeDetails> employeeList = employeeService.getAllEmployee(email , pass);
+		List<EmployeeDetails> employeeList = employeeService.getAllEmployee();
 		
 		return new ResponseEntity<List<EmployeeDetails>>(employeeList,HttpStatus.OK);
 	 }
