@@ -68,7 +68,7 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 		    
 		    SimpleMailMessage mail = new SimpleMailMessage();
 		    mail.setFrom(from);
-		    mail.setTo(employee.getEmail());
+		    mail.setTo(employee.getEmployeeEmail());
 		    mail.setSubject("Employee Registration");
 		    mail.setText("Dear Employee , Your Account has been Created successfully on Krushna FinCorp.");
 		    
@@ -102,7 +102,7 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 			
 			
 		    details.setEmployeeName(employee.getEmployeeName());
-		    details.setEmail(employee.getEmail());
+		    details.setEmployeeEmail(employee.getEmployeeEmail());
 		    details.setEmployeeType(employee.getEmployeeType());
 		
 		    details.setPassword(employee.getPassword());
@@ -140,7 +140,7 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 		
 		EmployeeDetails employeeDetails = getById.get();
 		
-		employeeDetails.setEmail(email);
+		employeeDetails.setEmployeeEmail(email);
 		
 		employeeRepo.save(employeeDetails);
 		
@@ -216,8 +216,8 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 	@Override
 	public EmployeeDetails getEmployee(String employeeEmail, String employeePassword) {
 
-	   EmployeeDetails employee = employeeRepo.findByEmail(employeeEmail);
-	   if(employee.getEmail().equals(employeeEmail) && employee.getPassword().equals(employeePassword))
+	   EmployeeDetails employee = employeeRepo.findByEmployeeEmail(employeeEmail);
+	   if(employee.getEmployeeEmail().equals(employeeEmail) && employee.getPassword().equals(employeePassword))
 	   {
 		   
 		   log.info(" GET All DATA successfully ");
@@ -262,18 +262,14 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 	@Override
 	public EmployeeDetails getEmployee(String mail) {
 		
-		return employeeRepo.findByEmail(mail);
+		return employeeRepo.findByEmployeeEmail(mail);
 	}
 
 	@Override
-	public List<EmployeeDetails> getAllEmployee(String email, String pass) {
+	public List<EmployeeDetails> getAllEmployee() {
 		
-
-		   if(email.equals("Admin") && pass.equals("Admin")){
-			    
 		   		return employeeRepo.findAll();
-		   	}
-		return null;
+		   
 	}
 	
 	
