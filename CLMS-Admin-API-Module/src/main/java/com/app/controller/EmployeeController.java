@@ -25,145 +25,139 @@ import com.app.service.EmployeeServiceI;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/employee")
+@RequestMapping("/admin")
 public class EmployeeController {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(EmployeeController.class);
-	
+
 	@Autowired
 	private EmployeeServiceI employeeService;
-	
+
+	@GetMapping("/test")
+	public String testAPIGateway() {
+		return "Testing API Gateway";
+	}
+
 	@PostMapping("/saveEmployee")
 	public ResponseEntity<String> saveEmployee(@RequestPart("emp") String emp,
-			                                   @RequestPart("photo") MultipartFile photo){
-	
+			@RequestPart("photo") MultipartFile photo) {
+
 		log.info("Employee Controller post mapping called...!");
-		String msg = employeeService.saveEmployee(emp,photo);
-		
-		return new ResponseEntity<String>(msg,HttpStatus.CREATED);
-		
+		String msg = employeeService.saveEmployee(emp, photo);
+
+		return new ResponseEntity<String>(msg, HttpStatus.CREATED);
+
 	}
-	
+
 	@PatchMapping("/updatename/{id}/{name}")
-	public ResponseEntity<String> updateEmployeeName(@PathVariable("id") Integer id, @PathVariable("name") String name){
-		
+	public ResponseEntity<String> updateEmployeeName(@PathVariable("id") Integer id,
+			@PathVariable("name") String name) {
+
 		log.info(" Employee name PATCH method mapping called...!");
-		
+
 		String msg = employeeService.UpdateEmpName(id, name);
-		
+
 		return new ResponseEntity<String>(msg, HttpStatus.ACCEPTED);
 	}
-	
+
 	@PatchMapping("/updatemail/{id}/{email}")
-	public ResponseEntity<String> updateEmployeeEmail(@PathVariable("id") Integer id, @PathVariable("email") String email){
-		
+	public ResponseEntity<String> updateEmployeeEmail(@PathVariable("id") Integer id,
+			@PathVariable("email") String email) {
+
 		log.info(" Employee Email PATCH method mapping called...!");
-		
+
 		String msg = employeeService.UpdateEmpEmail(id, email);
-		
+
 		return new ResponseEntity<String>(msg, HttpStatus.ACCEPTED);
 	}
-	
+
 	@PatchMapping("/updateempType/{id}/{type}")
-	public ResponseEntity<String> updateEmployeeType(@PathVariable("id") Integer id, @PathVariable("type") EmployeeType type){
-		
+	public ResponseEntity<String> updateEmployeeType(@PathVariable("id") Integer id,
+			@PathVariable("type") EmployeeType type) {
+
 		log.info(" Employee Type PATCH method mapping called...!");
-		
+
 		String msg = employeeService.UpdateEmpType(id, type);
-		
+
 		return new ResponseEntity<String>(msg, HttpStatus.ACCEPTED);
 	}
-	
+
 	@PatchMapping("/updatepassword/{id}/{pass}")
-	public ResponseEntity<String> updateEmployeePass(@PathVariable("id") Integer id, @PathVariable("pass") String pass){
-		
+	public ResponseEntity<String> updateEmployeePass(@PathVariable("id") Integer id,
+			@PathVariable("pass") String pass) {
+
 		log.info(" Employee Password PATCH method mapping called...!");
-		
+
 		String msg = employeeService.UpdateEmpPass(id, pass);
-		
+
 		return new ResponseEntity<String>(msg, HttpStatus.ACCEPTED);
 	}
-	
+
 	@PatchMapping("/updatephoto/{id}")
-	public ResponseEntity<String> updateEmployeePhoto(@PathVariable("id") Integer id, @RequestPart("photo") MultipartFile photo){
-		
+	public ResponseEntity<String> updateEmployeePhoto(@PathVariable("id") Integer id,
+			@RequestPart("photo") MultipartFile photo) {
+
 		log.info(" Employee File_Photo PATCH method mapping called...!");
-		
+
 		String msg = employeeService.UpdateEmpPhoto(id, photo);
-		
+
 		return new ResponseEntity<String>(msg, HttpStatus.ACCEPTED);
 	}
-	
-	
-	
+
 	@PutMapping("/changeEmployeeDetails/{employeeId}")
-	public ResponseEntity<Optional<EmployeeDetails>> changeEmployeeDetails(@PathVariable("employeeId") int  id, 
-			                                                               @RequestPart("profilePhoto") MultipartFile photo,
-			                                                               @RequestPart("emp") String employeeDetails )
-	{
-		
+	public ResponseEntity<Optional<EmployeeDetails>> changeEmployeeDetails(@PathVariable("employeeId") int id,
+			@RequestPart("profilePhoto") MultipartFile photo, @RequestPart("emp") String employeeDetails) {
+
 		log.info(" Emolyee PUT mapping called");
-		
-		Optional<EmployeeDetails> details =employeeService.changeEmployeeDetailsFild(id, photo ,employeeDetails);
-		
-		return new ResponseEntity<Optional<EmployeeDetails>>(details,HttpStatus.ACCEPTED);
+
+		Optional<EmployeeDetails> details = employeeService.changeEmployeeDetailsFild(id, photo, employeeDetails);
+
+		return new ResponseEntity<Optional<EmployeeDetails>>(details, HttpStatus.ACCEPTED);
 	}
 
 	@DeleteMapping("/delete/{employeeId}")
-	public ResponseEntity<String> deleteEmployee(@PathVariable("employeeId")Integer employeeId)
-	{     
+	public ResponseEntity<String> deleteEmployee(@PathVariable("employeeId") Integer employeeId) {
 		log.info("Employee DELETE method called...!");
-		
-	     employeeService.deleteData(employeeId);
-	
-        return new 	ResponseEntity<String>("Data is Deleted",HttpStatus.OK);
-     }
-	
-	
-	
-	 @GetMapping("/getEmployeeDetails/{email}/{pass}")
-	 public ResponseEntity<EmployeeDetails> getEmlpoyeeDetails(@PathVariable("email") String employeeEmail,@PathVariable("pass") String employeePassword)
-	 {
-		 log.info("Employee GET METHOD called");
-		 
-		 
-		EmployeeDetails employeeDetails =  employeeService.getEmployee(employeeEmail,employeePassword);
-		 return new ResponseEntity<EmployeeDetails>(employeeDetails,HttpStatus.OK);
-	 }
-	 
-	 
-	 @GetMapping("/getAllEmployee")
-	 public ResponseEntity<List<EmployeeDetails>> getAllEmployee()
-	 {
+
+		employeeService.deleteData(employeeId);
+
+		return new ResponseEntity<String>("Data is Deleted", HttpStatus.OK);
+	}
+
+	@GetMapping("/getEmployeeDetails/{email}/{pass}")
+	public ResponseEntity<EmployeeDetails> getEmlpoyeeDetails(@PathVariable("email") String employeeEmail,
+			@PathVariable("pass") String employeePassword) {
+		log.info("Employee GET METHOD called");
+
+		EmployeeDetails employeeDetails = employeeService.getEmployee(employeeEmail, employeePassword);
+		return new ResponseEntity<EmployeeDetails>(employeeDetails, HttpStatus.OK);
+	}
+
+	@GetMapping("/getAllEmployee")
+	public ResponseEntity<List<EmployeeDetails>> getAllEmployee() {
 		List<EmployeeDetails> employeeList = employeeService.getAllEmployee();
-		
-		return new ResponseEntity<List<EmployeeDetails>>(employeeList,HttpStatus.OK);
-	 }
-	 
-	 
-	 
-	 @PostMapping("/sendOTP/{email}")
-	 public ResponseEntity<String> sendOTP(@PathVariable("email") String email)
-	 {
-		 employeeService.sendOTP(email);
-		 
-		 return new ResponseEntity<String>("OTP has been sent to your email.", HttpStatus.ACCEPTED);
-	 }
-	 
-	 @PostMapping("/verifyOTP/{otp}")
-	 public ResponseEntity<EmployeeDetails> validateOTP(@PathVariable("otp") String otp)
-	 {
-		 
-		 EmployeeDetails ed =  employeeService.verifyOTP(otp);
-		 
-		 if(ed!=null)
-		 {
-			 return new ResponseEntity<EmployeeDetails>(ed, HttpStatus.OK);
-		 }else {
-			 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-		 }
-		 
-		 
-	 }
-	
+
+		return new ResponseEntity<List<EmployeeDetails>>(employeeList, HttpStatus.OK);
+	}
+
+	@PostMapping("/sendOTP/{email}")
+	public ResponseEntity<String> sendOTP(@PathVariable("email") String email) {
+		employeeService.sendOTP(email);
+
+		return new ResponseEntity<String>("OTP has been sent to your email.", HttpStatus.ACCEPTED);
+	}
+
+	@PostMapping("/verifyOTP/{otp}")
+	public ResponseEntity<EmployeeDetails> validateOTP(@PathVariable("otp") String otp) {
+
+		EmployeeDetails ed = employeeService.verifyOTP(otp);
+
+		if (ed != null) {
+			return new ResponseEntity<EmployeeDetails>(ed, HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+
+	}
+
 }
