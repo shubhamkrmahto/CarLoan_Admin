@@ -38,7 +38,7 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 	
 	//User email
 	private String emails;
-	
+		
 	private final Random random = new Random();
 	
 	public String generateOTP()
@@ -55,6 +55,9 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 	
 	@Value("${spring.mail.username}")
 	private String from;
+	
+	
+	
 
 	@Override
 	public String saveEmployee(String emp, MultipartFile photo)  {
@@ -74,6 +77,7 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 		    
 			
 		} catch (Exception e) {
+			log.error("Employee does not save Something went wrong : "+e.getMessage());
 			e.printStackTrace();
 		}
 		
@@ -108,7 +112,7 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 		
 		    details.setProfilePhoto(photo.getBytes());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		  log.error("Something went wrong : Employee Details not updated  "+e.getMessage()+"for this id : "+id);
 			e.printStackTrace();
 		}
 		employeeRepo.save(details);
@@ -192,7 +196,7 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 			employeeDetails.setProfilePhoto(photo.getBytes());
 			employeeRepo.save(employeeDetails);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			log.info("Image not updated : Something went wrong "+id);
 			e.printStackTrace();
 		}
 		
@@ -233,7 +237,6 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 
 	@Override
 	public void sendOTP(String email) {
-		// TODO Auto-generated method stub
 		emails=email;
 		generateOTP();
 		
@@ -244,6 +247,7 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 	    mail.setText("Your One Time Password is "+generatedOTP+".");
 	    
 	    mailSender.send(mail);
+	    log.info("One time password sent on this Email Id : "+email);
 		
 	}
 
