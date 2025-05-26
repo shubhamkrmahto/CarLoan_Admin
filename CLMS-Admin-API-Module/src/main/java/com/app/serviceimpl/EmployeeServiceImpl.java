@@ -13,15 +13,22 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import com.app.entity.EmployeeDetails;
+
+import com.app.entity.Customer;
+import com.app.entity.Employee;
 import com.app.enums.EmployeeType;
 import com.app.repo.EmployeeRepo;
 import com.app.service.EmployeeServiceI;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
+import jakarta.transaction.Transactional;
 
 
 
 @Service
+@Transactional
 public class EmployeeServiceImpl implements EmployeeServiceI {
 	
 	private static final Logger log=LoggerFactory.getLogger(EmployeeServiceImpl.class);
@@ -65,7 +72,7 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 		
 		try {
 			ObjectMapper mapper = new ObjectMapper();
-		    EmployeeDetails employee = mapper.readValue(emp,EmployeeDetails.class);
+		    Employee employee = mapper.readValue(emp,Employee.class);
 		    employee.setProfilePhoto(photo.getBytes());
 		    employeeRepo.save(employee);
 		    
@@ -90,19 +97,19 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 	}
 
 	@Override
-	public Optional<EmployeeDetails> changeEmployeeDetailsFild(int id, MultipartFile photo,
+	public Optional<Employee> changeEmployeeDetailsFild(int id, MultipartFile photo,
 			String employeeDetails) {
 		
-		Optional<EmployeeDetails> employeeDeta = employeeRepo.findById(id);
+		Optional<Employee> employeeDeta = employeeRepo.findById(id);
 		
-		EmployeeDetails details = employeeDeta.get();
+		Employee details = employeeDeta.get();
 		
 		ObjectMapper mapper = new ObjectMapper();
 		
 		try {
 			
 			
-		    EmployeeDetails employee = mapper.readValue(employeeDetails,EmployeeDetails.class);
+		    Employee employee = mapper.readValue(employeeDetails,Employee.class);
 			
 			
 		    details.setEmployeeName(employee.getEmployeeName());
@@ -124,9 +131,9 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 
 	public String UpdateEmpName(Integer id, String name) {
 
-		Optional<EmployeeDetails> getById = employeeRepo.findById(id);
+		Optional<Employee> getById = employeeRepo.findById(id);
 		
-		EmployeeDetails employeeDetails = getById.get();
+		Employee employeeDetails = getById.get();
 		
 		employeeDetails.setEmployeeName(name);
 		
@@ -140,9 +147,9 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 	@Override
 	public String UpdateEmpEmail(Integer id, String email) {
 		
-		Optional<EmployeeDetails> getById = employeeRepo.findById(id);
+		Optional<Employee> getById = employeeRepo.findById(id);
 		
-		EmployeeDetails employeeDetails = getById.get();
+		Employee employeeDetails = getById.get();
 		
 		employeeDetails.setEmployeeEmail(email);
 		
@@ -156,9 +163,9 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 	@Override
 	public String UpdateEmpType(Integer id, EmployeeType empType) {
 		
-		Optional<EmployeeDetails> getById = employeeRepo.findById(id);
+		Optional<Employee> getById = employeeRepo.findById(id);
 		
-		EmployeeDetails employeeDetails = getById.get();
+		Employee employeeDetails = getById.get();
 		
 		employeeDetails.setEmployeeType(empType);
 		
@@ -173,9 +180,9 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 	@Override
 	public String UpdateEmpPass(Integer id, String pass) {
 		
-		Optional<EmployeeDetails> getById = employeeRepo.findById(id);
+		Optional<Employee> getById = employeeRepo.findById(id);
 		
-		EmployeeDetails employeeDetails = getById.get();
+		Employee employeeDetails = getById.get();
 		
 		employeeDetails.setPassword(pass);
 		
@@ -189,9 +196,9 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 	@Override
 	public String UpdateEmpPhoto(Integer id, MultipartFile photo) {
 		
-		Optional<EmployeeDetails> getById = employeeRepo.findById(id);
+		Optional<Employee> getById = employeeRepo.findById(id);
 		
-		EmployeeDetails employeeDetails = getById.get();
+		Employee employeeDetails = getById.get();
 		
 		try {
 			employeeDetails.setProfilePhoto(photo.getBytes());
@@ -218,9 +225,9 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 		
 
 	@Override
-	public EmployeeDetails getEmployee(String employeeEmail, String employeePassword) {
+	public Employee getEmployee(String employeeEmail, String employeePassword) {
 
-	   EmployeeDetails employee = employeeRepo.findByEmployeeEmail(employeeEmail);
+	   Employee employee = employeeRepo.findByEmployeeEmail(employeeEmail);
 	   if(employee.getEmployeeEmail().equals(employeeEmail) && employee.getPassword().equals(employeePassword))
 	   {
 		   
@@ -253,7 +260,7 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 	}
 
 	@Override
-	public EmployeeDetails verifyOTP(String otp) {
+	public Employee verifyOTP(String otp) {
 		if(validateOTP(otp)) {
 			return getEmployee(emails);
 		}
@@ -264,16 +271,56 @@ public class EmployeeServiceImpl implements EmployeeServiceI {
 	}
 
 	@Override
-	public EmployeeDetails getEmployee(String mail) {
+	public Employee getEmployee(String mail) {
 		
 		return employeeRepo.findByEmployeeEmail(mail);
 	}
 
 	@Override
-	public List<EmployeeDetails> getAllEmployee() {
+	public List<Employee> getAllEmployee() {
 		
 		   		return employeeRepo.findAll();
 		   
+	}
+
+	@Override
+	@Transactional
+	public String saveCustomer(String customer, MultipartFile profileImage) {
+		// TODO Auto-generated method stub
+		
+		Employee eCustomer = new Employee();
+		
+		ObjectMapper om = new ObjectMapper();
+		om.registerModule(new JavaTimeModule());
+		
+		try {
+			Customer value = om.readValue(customer, Customer.class);
+			
+			employeeRepo.insertEmployee(value.getCustomerName(), value.getUserName(), value.getPassword(), value.getCustomerContactNumber(), EmployeeType.CUSTOMER.toString(), profileImage.getBytes());
+			
+//			eCustomer.setEmployeeName(value.getCustomerName());
+//			eCustomer.setEmployeeEmail(value.getUserName());
+//			eCustomer.setPassword(value.getPassword());
+//			eCustomer.setEmployeeContact(value.getCustomerContactNumber());
+//			eCustomer.setEmployeeType(EmployeeType.CUSTOMER);
+//			eCustomer.setProfilePhoto(profileImage.getBytes());
+//			
+//			employeeRepo.save(eCustomer);
+			
+			return "Customer Registered Successfully";
+			
+			
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		return null;
 	}
 	
 	
