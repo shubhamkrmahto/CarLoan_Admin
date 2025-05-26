@@ -19,11 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import com.app.entity.EmployeeDetails;
+import com.app.entity.Employee;
 import com.app.enums.EmployeeType;
 import com.app.service.EmployeeServiceI;
 
-@CrossOrigin("*")
 @RestController
 @RequestMapping("/admin")
 public class EmployeeController {
@@ -44,6 +43,19 @@ public class EmployeeController {
 
 		log.info("Employee Controller post mapping called...!");
 		String msg = employeeService.saveEmployee(emp, photo);
+
+		return new ResponseEntity<String>(msg, HttpStatus.CREATED);
+
+	}
+	
+	@PostMapping("/saveCustomer")
+	public ResponseEntity<String> saveCustomer(@RequestPart("emp") String customer,
+			@RequestPart("photo") MultipartFile profileImage) {
+
+		log.info("Employee Controller post mapping called...!");
+		String msg = employeeService.saveCustomer(customer, profileImage);
+		
+		System.out.println(customer);
 
 		return new ResponseEntity<String>(msg, HttpStatus.CREATED);
 
@@ -105,14 +117,14 @@ public class EmployeeController {
 	}
 
 	@PutMapping("/changeEmployeeDetails/{employeeId}")
-	public ResponseEntity<Optional<EmployeeDetails>> changeEmployeeDetails(@PathVariable("employeeId") int id,
+	public ResponseEntity<Optional<Employee>> changeEmployeeDetails(@PathVariable("employeeId") int id,
 			@RequestPart("profilePhoto") MultipartFile photo, @RequestPart("emp") String employeeDetails) {
 
 		log.info(" Emolyee PUT mapping called");
 
-		Optional<EmployeeDetails> details = employeeService.changeEmployeeDetailsFild(id, photo, employeeDetails);
+		Optional<Employee> details = employeeService.changeEmployeeDetailsFild(id, photo, employeeDetails);
 
-		return new ResponseEntity<Optional<EmployeeDetails>>(details, HttpStatus.ACCEPTED);
+		return new ResponseEntity<Optional<Employee>>(details, HttpStatus.ACCEPTED);
 	}
 
 	@DeleteMapping("/delete/{employeeId}")
@@ -125,19 +137,19 @@ public class EmployeeController {
 	}
 
 	@GetMapping("/getEmployeeDetails/{email}/{pass}")
-	public ResponseEntity<EmployeeDetails> getEmlpoyeeDetails(@PathVariable("email") String employeeEmail,
+	public ResponseEntity<Employee> getEmlpoyeeDetails(@PathVariable("email") String employeeEmail,
 			@PathVariable("pass") String employeePassword) {
 		log.info("Employee GET METHOD called");
 
-		EmployeeDetails employeeDetails = employeeService.getEmployee(employeeEmail, employeePassword);
-		return new ResponseEntity<EmployeeDetails>(employeeDetails, HttpStatus.OK);
+		Employee employeeDetails = employeeService.getEmployee(employeeEmail, employeePassword);
+		return new ResponseEntity<Employee>(employeeDetails, HttpStatus.OK);
 	}
 
 	@GetMapping("/getAllEmployee")
-	public ResponseEntity<List<EmployeeDetails>> getAllEmployee() {
-		List<EmployeeDetails> employeeList = employeeService.getAllEmployee();
+	public ResponseEntity<List<Employee>> getAllEmployee() {
+		List<Employee> employeeList = employeeService.getAllEmployee();
 
-		return new ResponseEntity<List<EmployeeDetails>>(employeeList, HttpStatus.OK);
+		return new ResponseEntity<List<Employee>>(employeeList, HttpStatus.OK);
 	}
 
 	@PostMapping("/sendOTP/{email}")
@@ -148,12 +160,12 @@ public class EmployeeController {
 	}
 
 	@PostMapping("/verifyOTP/{otp}")
-	public ResponseEntity<EmployeeDetails> validateOTP(@PathVariable("otp") String otp) {
+	public ResponseEntity<Employee> validateOTP(@PathVariable("otp") String otp) {
 
-		EmployeeDetails ed = employeeService.verifyOTP(otp);
+		Employee ed = employeeService.verifyOTP(otp);
 
 		if (ed != null) {
-			return new ResponseEntity<EmployeeDetails>(ed, HttpStatus.OK);
+			return new ResponseEntity<Employee>(ed, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
